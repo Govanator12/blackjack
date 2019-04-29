@@ -1,13 +1,15 @@
 from Deck import *
+from Blackjack import *
 
 class Player():
 
-    def __init__(self, name):
+    def __init__(self, name='Player'):
         self.name = name
         self.hand = []
 
-    def hit(self):
-        self.hand.append(deck.getCard)
+    def hit(self, deck, number_of_cards = 1):
+            for n in range(number_of_cards):
+                self.hand.append(deck.getCard())
 
     def resetPlayer(self):
         self.hand = []
@@ -16,6 +18,9 @@ class Player():
         return self.name
 
     def getHand(self):
+        return self.hand
+
+    def handValue(self):
         total = 0
         for card in self.hand:
             if isinstance(card, int):
@@ -29,4 +34,4 @@ class Player():
             else:
                 total += 1
 
-        return total if total <= 21 else -1
+        return total
