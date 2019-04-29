@@ -12,3 +12,6 @@ class Deck(object):
 
     def getCard(self):
         return self.deck.pop()
+
+    def getDeck(self):
+        return self.deck

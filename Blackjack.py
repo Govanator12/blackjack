@@ -13,8 +13,9 @@ class Blackjack():
     def menu(self):
         print('Welcome to Blackjack!')
         print('-----------------------')
-        ans = input('Whats your name? ')
-        self.player = Player(ans)
+        ans = (input('Whats your name? ')).title()
+        self.player = Player(ans)\
+
         while True:
             ans = (input(f"Start a new game {self.player.getName()}? (Y/N) ")).lower()
 
@@ -34,6 +35,19 @@ class Blackjack():
         self.dealer.resetPlayer()
         self.player.hit(self.deck, 2)
         self.dealer.hit(self.deck, 2)
+
+        # Assisted mode allows new players to get help when deciding whether to hit or stand
+        while True:
+            ans = (input('Would you like to play in assisted mode? (Y/N) ')).lower()
+
+            if ans == 'y':
+                self.player.setAssistedModeOn()
+                break
+            elif ans == 'n':
+                self.player.setAssistedModeOff()
+                break
+            else:
+                print("Please choose either 'Y' or 'N'")
 
         while True:
             Blackjack.showHands(self)
@@ -75,8 +89,25 @@ class Blackjack():
 
     def showHands(self):
         print(f'\nYour cards {self.player.getHand()}, your total: {self.player.handValue()}')
+
+        if self.player.isAssistedMode():
+            print(f'On hit your chance to bust is {Blackjack.chanceToBust(self)}%')
+
         print(f"Dealer's cards {self.dealer.getHand()}, their total: {self.dealer.handValue()}")
+
         print('-----------------------------------------------------------\n')
 
-    def getDeck():
-        return self.deck
+    def chanceToBust(self):
+        count = 0
+
+        for card in self.deck.getDeck():
+            if isinstance(card, str):
+                if self.player.handValue() + 10 > 21:
+                    count += 1
+            elif card == 'A':
+                if self.player.handValue() + 1 > 21:
+                    count += 1
+            else:
+                if self.player.handValue() + card > 21:
+                    count += 1
+        return int((count/len(self.deck.getDeck()))*100)
